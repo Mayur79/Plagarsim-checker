@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>PDF Similarity Checker - Result</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='result.css') }}">
+</head>
+<body>
+    <h1>PDF Similarity Checker - Result</h1>
+    <div id="result">
+        <div id="similarity">
+            <h2>Similarity Percentage:</h2>
+            <p>{{ similarity_percentage }}%</p>
+        </div>
+        <div id="text1">
+            <h2>Text from PDF1:</h2>
+            <pre>{{ text1 }}</pre>
+        </div>
+        <div id="text2">
+            <h2>Text from PDF2:</h2>
+            <pre>{{ text2 }}</pre>
+        </div>
+        <div id="summary1">
+            <h2>Summary of Text from PDF1:</h2>
+            <p>{{ summary1 }}</p>
+        </div>
+        <div id="summary2">
+            <h2>Summary of Text from PDF2:</h2>
+            <p>{{ summary2 }}</p>
+        </div>
+        <div id="similar_content">
+            <h2>Similar Content:</h2>
+            {% if similar_content %}
+                <ul>
+                    {% for content in similar_content %}
+                        <li>{{ content }}</li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>No similar content found.</p>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>

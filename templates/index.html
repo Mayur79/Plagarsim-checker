@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>PDF Similarity Checker</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+    <script>
+        function validateFileType(fileInput) {
+            const allowedExtensions = /(\.pdf)$/i;
+            if (!allowedExtensions.exec(fileInput.value)) {
+                alert('Please select a PDF file.');
+                fileInput.value = '';
+                return false;
+            }
+        }
+
+        function resetForm() {
+            document.getElementById('pdfForm').reset();
+        }
+    </script>
+</head>
+<body>
+    <h1>PDF Similarity Checker</h1>
+    <form method="post" action="/compare" enctype="multipart/form-data" id="pdfForm">
+        <input type="file" name="pdf1" accept=".pdf" required onchange="validateFileType(this)">
+        <input type="file" name="pdf2" accept=".pdf" required onchange="validateFileType(this)">
+        <button type="submit">Compare PDFs</button>
+        <button type="button" onclick="resetForm()">Reset</button>
+    </form>
+</body>
+</html>
