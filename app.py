@@ -10,7 +10,7 @@ from sumy.nlp.tokenizers import Tokenizer
 from sumy.summarizers.lsa import LsaSummarizer
 
 app = Flask(__name__)
-app.secret_key = 'your_secret_key'
+app.secret_key = 'dkfdfkemkrekdf'
 
 # Function to extract text from a PDF
 def get_pdf_text(pdf_file):
@@ -52,11 +52,17 @@ def compare_pdfs(pdf1, pdf2):
     summarizer2 = LsaSummarizer()
     summary2 = summarizer2(parser2.document, 3)  # Adjust the number of sentences in the summary
 
+    # Generate summary for similar content
+    parser_similar_content = PlaintextParser.from_string('\n'.join(similar_content), Tokenizer("english"))
+    summarizer_similar_content = LsaSummarizer()
+    summary_similar_content = summarizer_similar_content(parser_similar_content.document, 3)  # Adjust the number of sentences in the summary
+
     # Convert the summaries to a string
     summary1_text = "\n".join([str(sentence) for sentence in summary1])
     summary2_text = "\n".join([str(sentence) for sentence in summary2])
+    summary_similar_content_text = "\n".join([str(sentence) for sentence in summary_similar_content])
 
-    return text1, text2, similarity_percentage, summary1_text, summary2_text, similar_content
+    return text1, text2, similarity_percentage, summary1_text, summary2_text, similar_content, summary_similar_content_text
 
 # Route for the home page
 @app.route('/')
@@ -71,8 +77,8 @@ def compare():
         pdf2 = request.files['pdf2']
 
         if pdf1.filename and pdf2.filename:
-            text1, text2, similarity_percentage, summary1, summary2, similar_content = compare_pdfs(pdf1, pdf2)
-            return render_template('result.html', text1=text1, text2=text2, similarity_percentage=similarity_percentage, summary1=summary1, summary2=summary2, similar_content=similar_content)
+            text1, text2, similarity_percentage, summary1, summary2, similar_content, summary_similar_content = compare_pdfs(pdf1, pdf2)
+            return render_template('result.html', text1=text1, text2=text2, similarity_percentage=similarity_percentage, summary1=summary1, summary2=summary2, similar_content=similar_content, summary_similar_content=summary_similar_content)
         else:
             flash('Please select two PDF files for comparison.')
             return redirect(url_for('index'))
